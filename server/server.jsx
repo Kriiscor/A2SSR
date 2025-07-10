@@ -1,5 +1,5 @@
 import express from "express";
-import fs from "fs";
+import fs from "fs/promises";
 import path from "path";
 import process from "process";
 import React from "react";
@@ -14,11 +14,19 @@ app.use("/assets", express.static(path.join(process.cwd(), "build", "assets")));
 app.get("*", async (req, res) => {
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/todos");
+    if (!response.ok) {
+      console.error(
+        "Failed to fetch todos:",
+        response.status,
+        response.statusText
+      );
+      return res.status(500).send("Error fetching data from external API.");
+    }
     const todos = await response.json();
 
     const appHtml = ReactDOMServer.renderToString(<App todos={todos} />);
     const htmlPath = path.resolve(process.cwd(), "build", "index.html");
-    const htmlData = fs.readFileSync(htmlPath, "utf8");
+    const htmlData = await fs.readFile(htmlPath, "utf8");
 
     const finalHtml = htmlData
       .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`)
