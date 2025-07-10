@@ -4,14 +4,18 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "start": "node build/server.cjs",
-    "build": "npm run build:client && npm run build:server",
+    "_comment1": "Compile le code client (HTML/CSS) en utilisant Vite",
     "build:client": "vite build --outDir build",
-    "build:server": "esbuild server/server.cjs --bundle --platform=node --outfile=build/server.cjs"
+    "_comment2": "Compile le code serveur en utilisant esbuild, en entrée server/server.jsx, en sortie build/server.cjs, et en spécifiant que la plateforme cible est node",
+    "build:server": "esbuild server/server.jsx --bundle --platform=node --outfile=build/server.cjs --external:express",
+    "_comment3": "Exécute les scripts 'build:client' et 'build:server' pour compiler le code client et serveur",
+    "build": "npm run build:client && npm run build:server",
+    "_comment4": "Exécute les scripts 'build' pour compiler le code, puis exécute le code serveur en utilisant Node.js",
+    "start": "npm run build && node ./build/server.cjs"
   },
   "dependencies": {
-    "express": "^4.21.2",
+    "esbuild": "^0.25.6",
+    "express": "^4.19.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
@@ -20,7 +24,6 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
-    "esbuild": "^0.25.6",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
