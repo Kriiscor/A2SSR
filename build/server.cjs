@@ -24571,10 +24571,15 @@ app.get("*", async (req, res) => {
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/todos");
     const todos = await response.json();
-    const appHtml = import_server.default.renderToStaticMarkup(/* @__PURE__ */ import_react2.default.createElement(App_default, { todos }));
+    const appHtml = import_server.default.renderToString(/* @__PURE__ */ import_react2.default.createElement(App_default, { todos }));
     const htmlPath = import_path.default.resolve(import_process.default.cwd(), "build", "index.html");
     const htmlData = import_fs.default.readFileSync(htmlPath, "utf8");
-    const finalHtml = htmlData.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`).replace(/<script.*?>.*?<\/script>/g, "");
+    const finalHtml = htmlData.replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`).replace(
+      "</body>",
+      `<script>window.__INITIAL_DATA__ = ${JSON.stringify(
+        todos
+      )}</script></body>`
+    );
     res.send(finalHtml);
   } catch (error) {
     if (error.code === "ENOENT") {

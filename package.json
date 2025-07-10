@@ -5,13 +5,13 @@
   "type": "module",
   "scripts": {
     "_comment1": "Compile le code client (HTML/CSS) en utilisant Vite",
-    "build:client": "vite build --outDir build",
-    "_comment2": "Compile le code serveur en utilisant esbuild, en entrée server/server.jsx, en sortie build/server.cjs, et en spécifiant que la plateforme cible est node",
-    "build:server": "esbuild server/server.jsx --bundle --platform=node --outfile=build/server.cjs --external:express",
+    "build:client": "vite build --outDir dist",
+    "_comment2": "Compile le code serveur en utilisant esbuild, en entrée server/server.jsx, en sortie dist/server.cjs, et en spécifiant que la plateforme cible est node",
+    "build:server": "esbuild server/server.jsx --bundle --platform=node --outfile=dist/server.cjs --external:express",
     "_comment3": "Exécute les scripts 'build:client' et 'build:server' pour compiler le code client et serveur",
     "build": "npm run build:client && npm run build:server",
     "_comment4": "Exécute les scripts 'build' pour compiler le code, puis exécute le code serveur en utilisant Node.js",
-    "start": "npm run build && node ./build/server.cjs"
+    "start": "npm run build && node ./dist/server.cjs"
   },
   "dependencies": {
     "esbuild": "^0.25.6",

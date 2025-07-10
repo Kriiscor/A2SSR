@@ -9,7 +9,7 @@ import App from "../src/App";
 const app = express();
 const port = 3000;
 
-app.use("/assets", express.static(path.join(process.cwd(), "build", "assets")));
+app.use("/assets", express.static(path.join(process.cwd(), "dist", "assets")));
 
 app.get("*", async (req, res) => {
   try {
@@ -17,7 +17,7 @@ app.get("*", async (req, res) => {
     const todos = await response.json();
 
     const appHtml = ReactDOMServer.renderToString(<App todos={todos} />);
-    const htmlPath = path.resolve(process.cwd(), "build", "index.html");
+    const htmlPath = path.resolve(process.cwd(), "dist", "index.html");
     const htmlData = fs.readFileSync(htmlPath, "utf8");
 
     const finalHtml = htmlData
