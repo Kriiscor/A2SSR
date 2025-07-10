@@ -15,12 +15,9 @@ app.get("*", async (req, res) => {
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/todos");
     if (!response.ok) {
-      console.error(
-        "Failed to fetch todos:",
-        response.status,
-        response.statusText
+      throw new Error(
+        `Failed to fetch todos: ${response.status} ${response.statusText}`
       );
-      return res.status(500).send("Error fetching data from external API.");
     }
     const todos = await response.json();
 
@@ -48,7 +45,9 @@ app.get("*", async (req, res) => {
         );
     } else {
       console.error("An unexpected error occurred", error);
-      res.status(500).send("<h1>An unexpected error occurred</h1>");
+      res
+        .status(500)
+        .send(`<h1>An unexpected error occurred</h1><p>${error.message}</p>`);
     }
   }
 });
