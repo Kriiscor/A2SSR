@@ -15,13 +15,19 @@ app.get("*", async (req, res) => {
   try {
     const response = await fetch("https://jsonplaceholder.typicode.com/todos");
     const todos = await response.json();
-    const appHtml = ReactDOMServer.renderToStaticMarkup(<App todos={todos} />);
+
+    const appHtml = ReactDOMServer.renderToString(<App todos={todos} />);
     const htmlPath = path.resolve(process.cwd(), "build", "index.html");
     const htmlData = fs.readFileSync(htmlPath, "utf8");
 
     const finalHtml = htmlData
       .replace('<div id="root"></div>', `<div id="root">${appHtml}</div>`)
-      .replace(/<script.*?>.*?<\/script>/g, "");
+      .replace(
+        "</body>",
+        `<script>window.__INITIAL_DATA__ = ${JSON.stringify(
+          todos
+        )}</script></body>`
+      );
 
     res.send(finalHtml);
   } catch (error) {

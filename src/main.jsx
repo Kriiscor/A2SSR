@@ -1,10 +1,8 @@
 import React from "react";
-import { hydrateRoot } from "react-dom/client";
-import App from "./App.jsx";
+import ReactDOM from "react-dom/client";
+import App from "./App";
 
-hydrateRoot(
+ReactDOM.hydrateRoot(
   document.getElementById("root"),
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <App todos={window.__INITIAL_DATA__} />
 );
